@@ -1,0 +1,47 @@
+---
+title: "warm_up"
+output: html_document
+author: Ni Tang
+date: "2024-01-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 1. Plant Height Vector
+```{r}
+plant_height <- c(30.7, 37.6, 28.4, NA, 33.2)
+```
+
+### 2. Plant Mass Vector
+```{r}
+plant_mass <- c(4, 5.2, 3.7, NA, 4.6)
+```
+
+### 3. Lables for Data Matrix
+```{r}
+sample_name <- c("1", "2", "3", "4", "5")
+measures <- c("height", "mass")
+```
+
+### 4.Building the Matrix
+```{r}
+plants <- c(plant_height, plant_mass)
+plant_matrix <- matrix(plants, nrow=5, byrow=F)
+rownames(plant_matrix) <- sample_name
+colnames(plant_matrix) <- measures
+plant_matrix
+```
+
+### 5. Calculating Means
+```{r}
+plant_means <- colMeans(plant_matrix, na.rm=T)
+```
+
+### 6.Binding the Means
+```{r}
+all_plant_matrix <- rbind(plant_matrix, plant_means)
+all_plant_matrix
+```
+
