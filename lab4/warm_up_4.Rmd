@@ -1,0 +1,37 @@
+---
+title: "warm_up_4"
+author: "Ni Tang"
+date: "2024-01-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Load tidyverse and palmerpenguins
+```{r}
+library("tidyverse")
+library("palmerpenguins")
+```
+
+## 2.Dimensions of datasetpenguins
+```{r}
+dim(penguins)
+```
+
+## 3. Names of variables in penguins
+```{r}
+names(penguins)
+```
+
+## 4. How many individuals in each island
+```{r}
+table(penguins$island)
+```
+
+## 5.Mean body mass
+```{r}
+mean(penguins$body_mass_g, na.rm = T)
+```
+
