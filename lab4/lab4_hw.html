@@ -493,17 +493,67 @@ separate code chunks.</strong></p>
 ##  NA&#39;s   :502</code></pre>
 <p><strong>3. Change the class of the variables <code>taxon</code> and
 <code>order</code> to factors and display their levels.</strong></p>
+<pre class="r"><code>homerange$taxon &lt;- as.factor(homerange$taxon)
+homerange$order &lt;- as.factor(homerange$order)
+levels(homerange$taxon)</code></pre>
+<pre><code>## [1] &quot;birds&quot;         &quot;lake fishes&quot;   &quot;lizards&quot;       &quot;mammals&quot;      
+## [5] &quot;marine fishes&quot; &quot;river fishes&quot;  &quot;snakes&quot;        &quot;tortoises&quot;    
+## [9] &quot;turtles&quot;</code></pre>
+<pre class="r"><code>levels(homerange$order)</code></pre>
+<pre><code>##  [1] &quot;accipitriformes&quot;       &quot;afrosoricida&quot;          &quot;anguilliformes&quot;       
+##  [4] &quot;anseriformes&quot;          &quot;apterygiformes&quot;        &quot;artiodactyla&quot;         
+##  [7] &quot;caprimulgiformes&quot;      &quot;carnivora&quot;             &quot;charadriiformes&quot;      
+## [10] &quot;columbidormes&quot;         &quot;columbiformes&quot;         &quot;coraciiformes&quot;        
+## [13] &quot;cuculiformes&quot;          &quot;cypriniformes&quot;         &quot;dasyuromorpha&quot;        
+## [16] &quot;dasyuromorpia&quot;         &quot;didelphimorphia&quot;       &quot;diprodontia&quot;          
+## [19] &quot;diprotodontia&quot;         &quot;erinaceomorpha&quot;        &quot;esociformes&quot;          
+## [22] &quot;falconiformes&quot;         &quot;gadiformes&quot;            &quot;galliformes&quot;          
+## [25] &quot;gruiformes&quot;            &quot;lagomorpha&quot;            &quot;macroscelidea&quot;        
+## [28] &quot;monotrematae&quot;          &quot;passeriformes&quot;         &quot;pelecaniformes&quot;       
+## [31] &quot;peramelemorphia&quot;       &quot;perciformes&quot;           &quot;perissodactyla&quot;       
+## [34] &quot;piciformes&quot;            &quot;pilosa&quot;                &quot;proboscidea&quot;          
+## [37] &quot;psittaciformes&quot;        &quot;rheiformes&quot;            &quot;roden&quot;                
+## [40] &quot;rodentia&quot;              &quot;salmoniformes&quot;         &quot;scorpaeniformes&quot;      
+## [43] &quot;siluriformes&quot;          &quot;soricomorpha&quot;          &quot;squamata&quot;             
+## [46] &quot;strigiformes&quot;          &quot;struthioniformes&quot;      &quot;syngnathiformes&quot;      
+## [49] &quot;testudines&quot;            &quot;tetraodontiformes\xa0&quot; &quot;tinamiformes&quot;</code></pre>
 <p><strong>4. What taxa are represented in the <code>homerange</code>
 data frame? Make a new data frame <code>taxa</code> that is restricted
 to taxon, common name, class, order, family, genus,
 species.</strong></p>
+<pre class="r"><code>taxa &lt;- select(homerange, &quot;taxon&quot;, &quot;common.name&quot;, &quot;class&quot;, &quot;order&quot;, &quot;family&quot;, &quot;genus&quot;, &quot;species&quot;)
+taxa</code></pre>
+<pre><code>## # A tibble: 569 × 7
+##    taxon         common.name             class        order family genus species
+##    &lt;fct&gt;         &lt;chr&gt;                   &lt;chr&gt;        &lt;fct&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  
+##  1 lake fishes   american eel            actinoptery… angu… angui… angu… rostra…
+##  2 river fishes  blacktail redhorse      actinoptery… cypr… catos… moxo… poecil…
+##  3 river fishes  central stoneroller     actinoptery… cypr… cypri… camp… anomal…
+##  4 river fishes  rosyside dace           actinoptery… cypr… cypri… clin… fundul…
+##  5 river fishes  longnose dace           actinoptery… cypr… cypri… rhin… catara…
+##  6 river fishes  muskellunge             actinoptery… esoc… esoci… esox  masqui…
+##  7 marine fishes pollack                 actinoptery… gadi… gadid… poll… pollac…
+##  8 marine fishes saithe                  actinoptery… gadi… gadid… poll… virens 
+##  9 marine fishes lined surgeonfish       actinoptery… perc… acant… acan… lineat…
+## 10 marine fishes orangespine unicornfish actinoptery… perc… acant… naso  litura…
+## # ℹ 559 more rows</code></pre>
 <p><strong>5. The variable <code>taxon</code> identifies the common name
 groups of the species represented in <code>homerange</code>. Make a
 table the shows the counts for each of these
 <code>taxon</code>.</strong></p>
+<pre class="r"><code>table(homerange$taxon)</code></pre>
+<pre><code>## 
+##         birds   lake fishes       lizards       mammals marine fishes 
+##           140             9            11           238            90 
+##  river fishes        snakes     tortoises       turtles 
+##            14            41            12            14</code></pre>
 <p><strong>6. The species in <code>homerange</code> are also classified
 into trophic guilds. How many species are represented in each trophic
 guild.</strong></p>
+<pre class="r"><code>table(homerange$trophic.guild)</code></pre>
+<pre><code>## 
+## carnivore herbivore 
+##       342       227</code></pre>
 <p><strong>7. Make two new data frames, one which is restricted to
 carnivores and another that is restricted to herbivores.</strong></p>
 <p><strong>8. Do herbivores or carnivores have, on average, a larger
