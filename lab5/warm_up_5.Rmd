@@ -1,0 +1,36 @@
+---
+title: "warmup-5"
+author: "Ni Tang"
+date: "2024-01-25"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 0.Load todyverse
+```{r}
+library("tidyverse")
+```
+
+### 1.Load the fish data
+```{r}
+fish <- readr::read_csv("data/Gaeta_etal_CLC_data.csv")
+```
+
+### 2.Transform the fish data with only lakeid and length
+```{r}
+fishlength <- select(fish, "lakeid", "length")
+```
+
+### 3.Filter fish data to include only samples from lake BO
+```{r}
+fish_bo <- filter(fish, lakeid == "BO")
+```
+
+### 4.Calculte mean length from lake BO
+```{r}
+mean(fish_bo$length)
+```
+
