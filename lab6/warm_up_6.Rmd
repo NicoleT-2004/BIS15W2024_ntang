@@ -1,0 +1,54 @@
+---
+title: "warm_up_6"
+author: "Ni Tang"
+date: "2024-01-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+0.Load packages
+```{r}
+library("tidyverse")
+library("janitor")
+```
+
+1. Load the `bison.csv` data.
+```{r}
+bison<-read_csv("data/bison.csv")
+```
+
+2. What are the dimesions and structure of the data?
+```{r}
+dim(bison)
+str(bison)
+```
+```{r}
+names(bison)
+```
+
+3. We are only interested in code, sex, weight, year of birth. Restrict the data to these variables and store the dataframe as a new object.
+```{r}
+bison_new <- select(bison, "animal_code", "animal_sex", "animal_weight", "animal_yob")
+```
+
+4. Pull out the animals born between 1980-1990.
+```{r}
+bison_year <- filter(bison_new, animal_yob %in% c(1980,1990))
+```
+
+5. How many male and female bison are represented between 1980-1990?
+```{r}
+table(bison_year$animal_sex)
+```
+
+6. Between 1980-1990, were males or females larger on average?
+```{r}
+bison_year_m <- filter(bison_year, animal_sex == "M")
+mean(bison_year_m$animal_weight)
+bison_year_f <- filter(bison_year, animal_sex == "F")
+mean(bison_year_f$animal_weight)
+```
+
