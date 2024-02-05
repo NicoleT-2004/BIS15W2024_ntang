@@ -1,0 +1,204 @@
+---
+title: "Cheat Sheet"
+author: "Ni Tang"
+date: "2024-02-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+0.Packages
+```{r}
+library("tidyverse")
+library("janitor")
+library("skimr")
+```
+
+1. Working Directory
+```{r}
+getwd()
+```
+
+2. Define an Object
+```{r}
+x <- 1
+y <- 2
+cars <- c(x,y)
+my_vector_sequence <- c(1:100)
+my_vector_sequence[10]
+my_vector_sequence==15
+my_vector_sequence<=10
+my_vector_sequence[my_vector_sequence<=10]
+class(x)
+is.integer(x)
+is.na(cars)
+anyNA(cars)
+```
+3.Vectors
+```{r}
+my_vector_sequence <- c(1:100)
+my_vector_sequence[10]
+my_vector_sequence==15
+my_vector_sequence<=10
+my_vector_sequence[my_vector_sequence<=10]
+```
+
+4.Data Matrices Lab2-2
+```{r}
+#harry_potter_matrix <- matrix(box_office, nrow = 8, byrow = T)
+#region <- c("US", "non-US")
+#colnames(harry_potter_matrix) <- region (rowname is the same)
+#global <- rowSums(harry_potter_matrix)
+#all_harry_potter_matrix <- cbind(harry_potter_matrix, global) (rbind is the same)
+#
+```
+
+5.Data Frames Lab 3-1
+```{r}
+  Sex <- c("male", "female", "male")
+  Length <- c(3.2, 3.7, 3.4)
+  Weight <- c(2.9, 4.0, 3.1)
+```
+```{r}
+#hbirds <- data.frame(Sex, Length, Weight) #Build
+#names(hbirds)
+#dim(hbirds)
+#str(hbirds)
+#hbirds <- data.frame(sex=Sex, length=Length, weight_g=Weight)
+#hbirds$neighborhood <- c("lakewood", "brentwood", "lakewood", "scenic Heights")
+#cbind, rbind []  works the same as matrices
+#write.csv(hbirds, "hbirds_data.csv", row.names = FALSE)
+```
+
+6.Load csv Lab3-2
+```{r}
+#hot_springs <- read_csv("hsprings_data.csv")
+#class(hot_springs$scientist)
+#hot_springs$spring <- as.factor(hot_springs$spring)
+#levels(hot_springs$spring) #print每一种变量，剔除重复的
+#summary(hot_springs) glimpse()
+#ncol() nrow()
+#head() tail()
+#table(fish$lakeid) table(superhero_info$hair_color, superhero_info$alignment)
+#View(fish) Same as click directly in environment penal
+```
+
+7.Filter Select Lab 3-2. Lab 4-1
+```{r}
+#little_fish <- filter(fish, length<=100)
+#not_AL <- filter(fish, lakeid != "AL")
+#filter(fish, length %in% c(167, 175)) mammals4 <- filter(mammals3, genus %in% c("Lophocebus", "Erythrocebus", "Macaca"))
+#filter(fish, between(scalelength, 2.5, 2.55))
+#filter(fish, near(radii_length_mm, 2, tol = 0.2))
+#filter(fish, lakeid == "AL" & length > 350)
+```
+  + `filter(condition1, condition2)` will return rows where both conditions are met.  
+  + `filter(condition1, !condition2)` will return all rows where condition one is true but        condition 2 is not.  
+  + `filter(condition1 | condition2)` will return rows where condition 1 or condition 2 is        met.  
+  + `filter(xor(condition1, condition2)` will return all rows where only one of the conditions     is met, and not when both conditions are met.  
+```{r}
+#select(fish, "lakeid", "scalelength") select(fish, fish_id:length) Select from a range
+#select(fish, -"fish_id", -"annnumber", -"length", -"radii_length_mm") Except some column
+#select(fish, starts_with("radii"))
+#select_if(fish, is.numeric)
+#select_if(fish, ~!is.numeric(.)) the ! means not
+#select_if(all)  Selects all columns where all values are TRUE
+```
+  Options to select columns based on a specific criteria include:  
+  1. ends_with() = Select columns that end with a character string  
+  2. contains() = Select columns that contain a character string  
+  3. matches() = Select columns that match a regular expression  
+  4. one_of() = Select columns names that are from a group of names
+
+8.Renames
+```{r}
+#mammals <- rename(mammals, genus=Genus, wean_mass="wean mass", max_life="max. life", litter_size="litter size", litters_per_year="litters/year") new_name = "Old name"
+#mammals <- clean_names(mammals)
+```
+
+9.Pipes
+```{r}
+#fish %>% 
+  #select(lakeid, scalelength) %>% 
+  #filter(lakeid == "AL")
+```
+
+10.Arrange Lab 5-2
+```{r}
+#arrange(scalelength)
+#arrange(desc(scalelength))
+```
+
+11.Mutate Lab 5-2
+```{r}
+#mutate(length_mm = length*10)
+#mutate_all(tolower)
+#mutate(across(c("order", "family"), tolower))
+#mutate(newborn_new = ifelse(newborn == -999.00, NA, newborn))
+```
+
+11.Tabyl Lab 6-2
+```{r}
+#superhero_info %>% 
+  #tabyl(hair_color, alignment)
+#tabyl(superhero_info, alignment)
+```
+
+12.Summarise, Count Lab 6-2
+```{r}
+#summarise(n=n()) 
+#count(hair_color, alignment)
+#count(island, sort = T) sort=T sorts the column in descending order
+```
+```{r}
+#superhero_info %>% 
+  #filter(hair_color=="Green") %>% 
+  #group_by(alignment) %>% 
+  #summarise(n=n())
+#superhero_info %>% 
+  #filter(hair_color=="Green") %>% 
+  #count(hair_color, alignment)
+```
+ 
+ 13.Skimr Lab 7-1
+```{r}
+#skim(msleep24)
+#hist(msleep24$sleep_total_24)
+```
+
+14.Summarize Lab 7-1, 7-2
+```{r}
+#summarize(mean_sleep_lg=mean(sleep_total),
+#           min_sleep_lg=min(sleep_total),
+#           max_sleep_lg=max(sleep_total),
+#           sd_sleep_lg=sd(sleep_total),
+#           total=n())
+#summarize(number_NAs=sum(is.na(body_mass_g)))
+#summarize(n=n(), .groups= 'keep')
+```
+
+15.Group by Lab 7
+```{r}
+#group_by(island)
+```
+
+16.Across
+`across()`
+What about using `filter()` and `select()` across multiple variables? There is a function in dplyr called `across()` which is designed to work across multiple variables. Have a look at Rebecca Barter's awesome blog [here](http://www.rebeccabarter.com/blog/2020-07-09-across/).  
+```{r}
+#across(.cols, .fnd)  .cols specifies the columns that you want the dplyr function to act on
+#summarise(across(c(species, island, sex), 
+#                  n_distinct))
+#penguins %>%
+  #summarize(across(where(is.numeric), mean, na.rm=T)) %>% 
+  #select(!year)
+```
+
+17.n disstinct
+```{r}
+#distinct_species = n_distinct(species)
+```
+
+
