@@ -99,9 +99,16 @@ sydneybeaches_ave %>%
   pivot_wider(names_from = year,
               values_from = average_enterococci_cfu_100ml) %>%
   select("site","2013") %>%
-  arrange("2013")
+  arrange(desc(`2013`)) # adding `` makes R recognizing the col name
 ```
-It's Bondi Beach.
+OR
+```{r}
+sydneybeaches_ave %>%
+  filter(year == 2013) %>%
+  arrange(-average_enterococci_cfu_100ml)
+```
+
+It's Little Bay Beach.
 10. Please complete the class project survey at: [BIS 15L Group Project](https://forms.gle/H2j69Z3ZtbLH3efW6)
 
 ## Push your final code to GitHub!
