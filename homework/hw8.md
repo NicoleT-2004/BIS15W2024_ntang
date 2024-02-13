@@ -174,26 +174,52 @@ sydneybeaches_ave %>%
   pivot_wider(names_from = year,
               values_from = average_enterococci_cfu_100ml) %>%
   select("site","2013") %>%
-  arrange("2013")
+  arrange(desc(`2013`)) # adding `` makes R recognizing the col name
 ```
 
 ```
 ## # A tibble: 11 × 2
 ##    site                    `2013`
 ##    <chr>                    <dbl>
-##  1 Bondi Beach              32.2 
-##  2 Bronte Beach             26.8 
-##  3 Clovelly Beach            9.28
-##  4 Coogee Beach             39.7 
-##  5 Gordons Bay (East)       24.8 
-##  6 Little Bay Beach        122.  
-##  7 Malabar Beach           101.  
-##  8 Maroubra Beach           47.1 
-##  9 South Maroubra Beach     39.3 
-## 10 South Maroubra Rockpool  96.4 
-## 11 Tamarama Beach           29.7
+##  1 Little Bay Beach        122.  
+##  2 Malabar Beach           101.  
+##  3 South Maroubra Rockpool  96.4 
+##  4 Maroubra Beach           47.1 
+##  5 Coogee Beach             39.7 
+##  6 South Maroubra Beach     39.3 
+##  7 Bondi Beach              32.2 
+##  8 Tamarama Beach           29.7 
+##  9 Bronte Beach             26.8 
+## 10 Gordons Bay (East)       24.8 
+## 11 Clovelly Beach            9.28
 ```
-It's Bondi Beach.
+OR
+
+```r
+sydneybeaches_ave %>%
+  filter(year == 2013) %>%
+  arrange(-average_enterococci_cfu_100ml)
+```
+
+```
+## # A tibble: 11 × 3
+## # Groups:   year [1]
+##    year  site                    average_enterococci_cfu_100ml
+##    <chr> <chr>                                           <dbl>
+##  1 2013  Little Bay Beach                               122.  
+##  2 2013  Malabar Beach                                  101.  
+##  3 2013  South Maroubra Rockpool                         96.4 
+##  4 2013  Maroubra Beach                                  47.1 
+##  5 2013  Coogee Beach                                    39.7 
+##  6 2013  South Maroubra Beach                            39.3 
+##  7 2013  Bondi Beach                                     32.2 
+##  8 2013  Tamarama Beach                                  29.7 
+##  9 2013  Bronte Beach                                    26.8 
+## 10 2013  Gordons Bay (East)                              24.8 
+## 11 2013  Clovelly Beach                                   9.28
+```
+
+It's Little Bay Beach.
 10. Please complete the class project survey at: [BIS 15L Group Project](https://forms.gle/H2j69Z3ZtbLH3efW6)
 
 ## Push your final code to GitHub!
