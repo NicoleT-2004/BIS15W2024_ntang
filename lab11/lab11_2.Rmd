@@ -46,17 +46,17 @@ p <- homerange %>%
 
 Play with point size by adjusting the `size` argument.
 ```{r}
-
+p + geom_point(size=1.25)
 ```
 
 We can color the points by a categorical variable.
 ```{r}
-
+p + geom_point(aes(color=thermoregulation), size = 1.5) #for scatterplots, color is the same as fill in barplots
 ```
 
 We can also map shapes to another categorical variable.
 ```{r}
-
+p+ geom_point(aes(color=thermoregulation, shape=thermoregulation),size=1.5)
 ```
 
 ## Barplots and multiple variables
@@ -68,22 +68,47 @@ homerange %>% count(taxon, sort=T)
 
 Now let's make a bar plot of these data.
 ```{r}
-
+homerange %>%
+  ggplot(aes(taxon))+
+  geom_bar()+
+  coord_flip()+
+   labs(title="Obesrvations by Taxons",
+       x="Taxons",
+       y="Number")
 ```
 
 By specifying `fill=trophic.guild` we build a stacked bar plot that shows the proportion of a given taxonomic group that is an herbivore or carnivore.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=taxon,fill=trophic.guild))+
+  geom_bar()+
+  coord_flip()+
+   labs(title="Obesrvations by Taxons",
+       x="Taxons",
+       y="Number")
 ```
 
 We can also have counts of each trophic guild within taxonomic group shown side-by-side by specifying `position="dodge"`.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=taxon, fill=trophic.guild))+
+  geom_bar(position="dodge")+
+  theme(axis.text.x=element_text(angle=45,hjust=1))+
+  coord_flip()+
+   labs(title="Obesrvations by Taxons",
+       x="Taxons",
+       y="Number")
 ```
 
 Here is the same plot oriented vertically.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x=taxon, fill=trophic.guild))+
+  geom_bar(position="dodge")+
+  theme(axis.text.x=element_text(angle=45,hjust=1))+
+   labs(title="Obesrvations by Taxons",
+       x="Taxons",
+       y="Number")
 ```
 
 We can also scale all bars to a percentage.
@@ -100,7 +125,12 @@ For this practice, let's use the [palmerpenguins](https://allisonhorst.github.io
 
 1. Make a bar plot that shows counts of individuals by island. Fill by species, and try both a stacked bar plot and `position="dodge"`.
 ```{r}
-
+penguins %>%
+  ggplot(aes(x=island,fill=species))+
+  geom_bar(position="dodge")+
+    labs(title="Obesrvations by Islands",
+       x="Island Names",
+       y="Counts")
 ```
 
 ```{r}
@@ -109,8 +139,16 @@ For this practice, let's use the [palmerpenguins](https://allisonhorst.github.io
 
 2. Make another bar plot that shows the number of individuals by sex on each island?
 ```{r}
-
+penguins %>%
+  filter(sex != "NA") %>%
+  ggplot(aes(x=island,fill=sex))+
+  geom_bar(position="dodge")+
+    labs(title="Obesrvations by Islands",
+       x="Island Names",
+       y="Counts")
 ```
+
+
 
 ## Using `group`
 In addition to `fill`, `group` is an aesthetic that accomplishes the same function but does not add color.
@@ -131,7 +169,9 @@ homerange %>%
 
 I can also use `fill` to associate the different taxa with a color coded key.
 ```{r}
-
+homerange %>% 
+  ggplot(aes(x = class, y = log10.mass, group = taxon, fill = taxon)) +
+  geom_boxplot(alpha = 0.6)
 ```
 
 ## Wrap-up  
