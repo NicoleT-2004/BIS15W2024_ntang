@@ -9,11 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Your Name Here" />
+<meta name="author" content="Ni Tang" />
 
-<meta name="date" content="2024-02-03" />
+<meta name="date" content="2024-02-20" />
 
-<title>Lab 7 Homework</title>
+<title>Homework 6</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -374,9 +374,9 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Lab 7 Homework</h1>
-<h4 class="author">Your Name Here</h4>
-<h4 class="date">2024-02-03</h4>
+<h1 class="title toc-ignore">Homework 6</h1>
+<h4 class="author">Ni Tang</h4>
+<h4 class="date">2024-02-20</h4>
 
 </div>
 
@@ -723,8 +723,9 @@ were caught as part of these data?</li>
 ##  9 Thailand                               6243
 ## 10 Korea, Republic of                     6124
 ## # ℹ 183 more rows</code></pre>
-<p>China 7. Which country caught the most sardines (<em>Sardina
-pilchardus</em>) between the years 1990-2000?</p>
+<p>China<br />
+7. Which country caught the most sardines (<em>Sardina pilchardus</em>)
+between the years 1990-2000?</p>
 <pre class="r"><code>fisheries_tidy %&gt;%
   filter( asfis_species_name == &quot;Sardina pilchardus&quot;) %&gt;%
   filter( year %in% c(1990,2000) ) %&gt;%

@@ -1,6 +1,6 @@
 ---
-title: "Lab 7 Homework"
-author: "Your Name Here"
+title: "Homework 6"
+author: "Ni Tang"
 date: "`r Sys.Date()`"
 output:
   html_document: 
@@ -89,7 +89,7 @@ fisheries_tidy %>%
   summarize(overall_catch_2000=sum(catch, na.rm = T)) %>%
   arrange(desc(overall_catch_2000))
 ```
-China
+China  
 7. Which country caught the most sardines (_Sardina pilchardus_) between the years 1990-2000?
 ```{r}
 fisheries_tidy %>%

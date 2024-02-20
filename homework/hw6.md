@@ -1,7 +1,7 @@
 ---
-title: "Lab 7 Homework"
-author: "Your Name Here"
-date: "2024-02-03"
+title: "Homework 6"
+author: "Ni Tang"
+date: "2024-02-20"
 output:
   html_document: 
     theme: spacelab
@@ -382,7 +382,7 @@ fisheries_tidy %>%
 ## 10 Korea, Republic of                     6124
 ## # ℹ 183 more rows
 ```
-China
+China  
 7. Which country caught the most sardines (_Sardina pilchardus_) between the years 1990-2000?
 
 ```r
