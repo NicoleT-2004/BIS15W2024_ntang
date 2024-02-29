@@ -105,38 +105,46 @@ sharks_dups <- sharks %>%
 ```
 
 ```{r}
-
+lat <- c(32.00, 41.00)
+long <- c(-125, -116.0)
 ```
 
 ```{r}
-
+bbox <- make_bbox(long, lat, f = 0.03) 
 ```
 
 2. Load a map from `stamen` in a terrain style projection and display the map.
 ```{r}
-
+map2 <- get_stadiamap(bbox, maptype = "stamen_terrain", zoom=7)
 ```
 
 ```{r}
-
+ggmap(map2)
 ```
 
 3. Build a map that overlays the recorded observations of shark attacks in California.
 ```{r}
-
+ggmap(map2) +
+  geom_point(data = sharks_dups, aes(longitude, latitude), size=0.4) +
+  labs(x= "Longitude", y= "Latitude", title="Shark Attack Locations")
 ```
 
 4. What if you only wanted to map the fatalities?
 ```{r}
-
+sharks_fatal <- sharks_dups %>%
+  filter(injury == "fatal")
 ```
 
 ```{r}
-
+ggmap(map2) +
+  geom_point(data = sharks_fatal, aes(longitude, latitude), size=0.4) +
+  labs(x= "Longitude", y= "Latitude", title="Fatal Shark Attack Locations")
 ```
 
 ```{r}
-
+ggmap(map2) +
+  geom_point(data = sharks_dups, aes(longitude, latitude), size=0.4) +
+  labs(x= "Longitude", y= "Latitude", title="Shark Attack Locations")
 ```
 
 ```{r}
