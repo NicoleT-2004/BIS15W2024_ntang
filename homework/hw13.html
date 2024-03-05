@@ -9,9 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Please Add Your Name Here" />
+<meta name="author" content="Ni Tang" />
 
-<meta name="date" content="2024-03-03" />
+<meta name="date" content="2024-03-05" />
 
 <title>Homework 13</title>
 
@@ -375,8 +375,8 @@ display: none;
 
 
 <h1 class="title toc-ignore">Homework 13</h1>
-<h4 class="author">Please Add Your Name Here</h4>
-<h4 class="date">2024-03-03</h4>
+<h4 class="author">Ni Tang</h4>
+<h4 class="date">2024-03-05</h4>
 
 </div>
 
@@ -398,7 +398,8 @@ report neat and clean!</p>
 <h2>Libraries</h2>
 <pre class="r"><code>library(tidyverse)
 library(shiny)
-library(shinydashboard)</code></pre>
+library(shinydashboard)
+library(naniar)</code></pre>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
@@ -420,15 +421,143 @@ individuals in each category are presented by demographic.</p>
 overall structure of the data frame, including its dimensions, column
 names, variable classes, etc. As part of this, determine if there are
 NA’s and how they are treated.</strong></p>
+<pre class="r"><code>str(UC_admit)</code></pre>
+<pre><code>## spc_tbl_ [2,160 × 6] (S3: spec_tbl_df/tbl_df/tbl/data.frame)
+##  $ Campus         : chr [1:2160] &quot;Davis&quot; &quot;Davis&quot; &quot;Davis&quot; &quot;Davis&quot; ...
+##  $ Academic_Yr    : num [1:2160] 2019 2019 2019 2019 2019 ...
+##  $ Category       : chr [1:2160] &quot;Applicants&quot; &quot;Applicants&quot; &quot;Applicants&quot; &quot;Applicants&quot; ...
+##  $ Ethnicity      : chr [1:2160] &quot;International&quot; &quot;Unknown&quot; &quot;White&quot; &quot;Asian&quot; ...
+##  $ Perc FR        : chr [1:2160] &quot;21.16%&quot; &quot;2.51%&quot; &quot;18.39%&quot; &quot;30.76%&quot; ...
+##  $ FilteredCountFR: num [1:2160] 16522 1959 14360 24024 17526 ...
+##  - attr(*, &quot;spec&quot;)=
+##   .. cols(
+##   ..   Campus = col_character(),
+##   ..   Academic_Yr = col_double(),
+##   ..   Category = col_character(),
+##   ..   Ethnicity = col_character(),
+##   ..   `Perc FR` = col_character(),
+##   ..   FilteredCountFR = col_double()
+##   .. )
+##  - attr(*, &quot;problems&quot;)=&lt;externalptr&gt;</code></pre>
+<pre class="r"><code>miss_var_summary(UC_admit)</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   variable        n_miss pct_miss
+##   &lt;chr&gt;            &lt;int&gt;    &lt;dbl&gt;
+## 1 Perc FR              1   0.0463
+## 2 FilteredCountFR      1   0.0463
+## 3 Campus               0   0     
+## 4 Academic_Yr          0   0     
+## 5 Category             0   0     
+## 6 Ethnicity            0   0</code></pre>
+<p>Some missing variables are treated as Unknown.</p>
 <p><strong>2. The president of UC has asked you to build a shiny app
 that shows admissions by ethnicity across all UC campuses. Your app
 should allow users to explore year, campus, and admit category as
 interactive variables. Use shiny dashboard and try to incorporate the
 aesthetics you have learned in ggplot to make the app neat and
 clean.</strong></p>
+<pre class="r"><code>table(UC_admit$Campus)</code></pre>
+<pre><code>## 
+##      Berkeley         Davis        Irvine   Los_Angeles        Merced 
+##           240           240           240           240           240 
+##     Riverside     San_Diego Santa_Barbara    Santa_Cruz 
+##           240           240           240           240</code></pre>
+<pre class="r"><code>table(UC_admit$Category)</code></pre>
+<pre><code>## 
+##     Admits Applicants  Enrollees 
+##        720        720        720</code></pre>
+<pre class="r"><code>table(UC_admit$Ethnicity)</code></pre>
+<pre><code>## 
+## African American              All  American Indian            Asian 
+##              270              270              270              270 
+##   Chicano/Latino    International          Unknown            White 
+##              270              270              270              270</code></pre>
+<pre class="r"><code>ui &lt;- dashboardPage(
+  
+  dashboardHeader(title = &quot;UC Admission&quot;),
+  
+  dashboardSidebar(disable=T),
+  
+  dashboardBody(
+  fluidRow(
+  box(title = &quot;Options&quot;, width = 3,
+ 
+      selectInput(&quot;x&quot;, &quot;Select Category&quot;, choices = c(&quot;Admits&quot;, &quot;Applicants&quot;, &quot;Enrollees&quot;),
+              selected = &quot;Admits&quot;),
+      selectInput(&quot;y&quot;, &quot;Select Campus&quot;, choices = c(&quot;Davis&quot;, &quot;Berkeley&quot;, &quot;Irvine&quot;, &quot;Los_Angeles&quot;, &quot;Merced&quot;, &quot;Riverside&quot;, &quot;San_Diego&quot;, &quot;Santa_Barbara&quot;, &quot;Santa_Cruz&quot;),
+              selected = &quot;Davis&quot;),
+      sliderInput(&quot;year&quot;, &quot;Select Year&quot;, min = 2010, max = 2019, value = 2010, step = 1),
+),   
+
+box(title = &quot;Ethnicity Distribution&quot;, width = 9,
+  plotOutput(&quot;plot&quot;, width = &quot;800px&quot;, height = &quot;600px&quot;)
+) 
+) 
+) 
+) 
+
+server &lt;- function(input, output, session) {
+  
+  session$onSessionEnded(stopApp) 
+  
+   output$plot &lt;- renderPlot({
+    
+    UC_admit %&gt;% 
+    filter(Ethnicity != &quot;All&quot;) %&gt;%
+    filter(Category == input$x) %&gt;% 
+    filter(Campus == input$y) %&gt;%
+    filter(Academic_Yr == input$year) %&gt;%
+    ggplot(aes(x=Ethnicity, y=FilteredCountFR)) + 
+    geom_col()
+    })
+}
+
+shinyApp(ui, server)</code></pre>
 <p><strong>3. Make alternate version of your app above by tracking
 enrollment at a campus over all of the represented years while allowing
 users to interact with campus, category, and ethnicity.</strong></p>
+<pre class="r"><code>ui &lt;- dashboardPage(
+  
+  dashboardHeader(title = &quot;UC Admission&quot;),
+  
+  dashboardSidebar(disable=T),
+  
+  dashboardBody(
+  fluidRow(
+  box(title = &quot;Options&quot;, width = 3,
+ 
+      selectInput(&quot;x&quot;, &quot;Select Category&quot;, choices = c(&quot;Admits&quot;, &quot;Applicants&quot;, &quot;Enrollees&quot;),
+              selected = &quot;Admits&quot;),
+      selectInput(&quot;y&quot;, &quot;Select Campus&quot;, choices = c(&quot;Davis&quot;, &quot;Berkeley&quot;, &quot;Irvine&quot;, &quot;Los_Angeles&quot;, &quot;Merced&quot;, &quot;Riverside&quot;, &quot;San_Diego&quot;, &quot;Santa_Barbara&quot;, &quot;Santa_Cruz&quot;),
+              selected = &quot;Davis&quot;),
+     selectInput(&quot;z&quot;, &quot;Select Ethnicity&quot;, choices = c(&quot;International&quot;, &quot;African American&quot;, &quot;All&quot;, &quot;American Indian&quot;, &quot;Asian&quot;, &quot;Chicano/Latino&quot;, &quot;Unknown&quot;, &quot;White&quot;),
+              selected = &quot;African American&quot;)
+),
+
+box(title = &quot;Overall Enrollment&quot;, width = 9,
+  plotOutput(&quot;plot&quot;, width = &quot;800px&quot;, height = &quot;600px&quot;)
+)
+)
+)
+)
+
+server &lt;- function(input, output, session){
+  
+  session$onSessionEnded(stopApp) 
+  
+   output$plot &lt;- renderPlot({
+    
+    UC_admit %&gt;% 
+    filter(Category == input$x) %&gt;% 
+    filter(Campus == input$y) %&gt;%
+    filter(Ethnicity == input$z) %&gt;%
+    ggplot(aes(x=Academic_Yr, y=FilteredCountFR))+ 
+    geom_point()
+     
+    })
+}
+
+shinyApp(ui, server)</code></pre>
 </div>
 <div id="push-your-final-code-to-github" class="section level2">
 <h2>Push your final code to GitHub!</h2>
