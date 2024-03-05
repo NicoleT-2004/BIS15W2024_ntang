@@ -45,6 +45,7 @@ table(UC_admit$Category)
 table(UC_admit$Ethnicity)
 ```
 
+
 ```{r, eval=F, echo=T}
 ui <- dashboardPage(
   
