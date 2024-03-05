@@ -47,14 +47,14 @@ It has 16 variables and 211 observations. The missing values are represented as 
 ```{r}
 sharks <- sharks %>%
   filter(incident_num != "NOT COUNTED")
-sharks$incident_num = as.double(sharks$incident_num) 
+#sharks$incident_num = as.double(sharks$incident_num) 
 ```
 
 3. (3 points) Are there any "hotspots" for shark incidents in California? Make a plot that shows the total number of incidents per county. Which county has the highest number of incidents?
 ```{r}
 sharks %>%
-  ggplot(aes(x=county,y=incident_num)) +
-  geom_col() +
+  ggplot(aes(x=county)) +
+  geom_bar() +
   labs(title = "Shark Incidents in Each County of California",
        x="County",
        y="Incident Numbers")+
@@ -65,8 +65,8 @@ Santa Cruz has the highest number of incidents.
 4. (3 points) Are there months of the year when incidents are more likely to occur? Make a plot that shows the total number of incidents by month. Which month has the highest number of incidents?  
 ```{r}
 sharks %>%
-  ggplot(aes(x=month,y=incident_num))+
-  geom_col()+
+  ggplot(aes(x=month))+
+  geom_bar()+
   labs(title = "Shark Incidents in Different Month",
        x="Month",
        y="Incident Numbers") 
@@ -78,19 +78,19 @@ October has most incidents.
 sharks %>%
   group_by(county,injury) %>%
   filter(injury == "fatal") %>%
-  summarise(incident_total = sum(incident_num)) %>%
+  summarise(incident_total = n()) %>%
   arrange(-incident_total)
 sharks %>%
   group_by(county,injury) %>%
-  summarise(incident_total = sum(incident_num)) 
+  summarise(incident_total = n()) 
 ```
 San Luis Obispo has the most number of fatalities.  
 
 6. (2 points) In the data, `mode` refers to a type of activity. Which activity is associated with the highest number of incidents?
 ```{r}
 sharks %>%
-  ggplot(aes(x=mode,y=incident_num))+
-  geom_col()+
+  ggplot(aes(x=mode))+
+  geom_bar()+
   labs(title = "Shark Incidents vs. Type of Ativity",
       x="Type of Activity",
       y="Incident Numbers")+
@@ -102,8 +102,8 @@ Surfing/Boarding is most related to shark incidents.
 7. (4 points) Use faceting to make a plot that compares the number and types of injuries by activity. (hint: the x axes should be the type of injury) 
 ```{r}
 sharks %>%
-  ggplot(aes(x=injury,y=incident_num))+
-  geom_col()+
+  ggplot(aes(x=injury))+
+  geom_bar()+
   facet_wrap(~mode)+
   labs(title = "Shark Incidents'Level vs. Type of Ativity",
     x="Level of Injury",
@@ -114,7 +114,7 @@ sharks %>%
 ```{r}
 sharks %>%
   group_by(species) %>%
-  summarise(incident_total = sum(incident_num)) %>%
+  summarise(incident_total = n()) %>%
   arrange(-incident_total)
 ```
 White Shark is involved in the highest number of incidents.  
@@ -123,8 +123,8 @@ White Shark is involved in the highest number of incidents.
 ```{r}
 sharks %>%
   filter(species=="White") %>%
-  ggplot(aes(x=injury,y=incident_num))+
-  geom_col()+
+  ggplot(aes(x=injury))+
+  geom_bar()+
    labs(title = "Great White Incidents and Injury Types",
     x="Level of Injury",
     y="Incident Numbers")+
